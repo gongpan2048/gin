@@ -20,13 +20,6 @@ func IndexApi(c *gin.Context) {
 	c.String(http.StatusOK, "Hello World! this is a dome about blog")
 }
 
-//渲染HTMTL页面
-/*func ShowHtmlPage(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", gin.H{
-		"title": "GIN: HTML页面",
-	})
-}*/
-
 //博客列表页面
 func ListHtml(c *gin.Context) {
 	c.HTML(http.StatusOK, "list.html", gin.H{
@@ -34,7 +27,7 @@ func ListHtml(c *gin.Context) {
 	})
 }
 
-//博客数据列表
+//获取博客列表
 func GetDataList(c *gin.Context) {
 	//得到参数用户ID，得到该用户的博客
 	userId := c.PostForm("userid")
@@ -45,6 +38,7 @@ func GetDataList(c *gin.Context) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	//调用models里的GetBlogList(uid)获取博客数据列表
 	datalist := mo.GetBlogList(uid)
 	//count：=mo.GetBlogSum(uid)
 
@@ -86,7 +80,7 @@ func AddBlogApi(c *gin.Context) {
 
 	//赋值
 	b := mo.Blogs{UserID: uid, BlogID: bid, Title: tilte, Content: content}
-	//调用模型层中的增加函数
+	//调用models中的AddBlogs(),增加博客
 	r1 := b.AddBlogs()
 
 	c.JSON(http.StatusOK, gin.H{
@@ -121,7 +115,7 @@ func DeleteBlogApi(c *gin.Context) {
 
 	b := mo.Blogs{UserID: uid, BlogID: bid, Title: "", Content: ""}
 
-	//调用模型中的删除函数
+	//调用models中的DeleteBlogs(),删除博客
 	r2 := b.DeleteBlogs()
 	if r2 == false {
 		log.Fatalln("删除失败")
@@ -196,7 +190,7 @@ func EditBlogApi(c *gin.Context) {
 	//赋值
 	b := mo.Blogs{UserID: uid, BlogID: bid, Title: tilte, Content: content}
 
-	//调用模型中的编辑函数
+	//调用models中的EditBlogs()，编辑函数
 	r3 := b.EditBlogs()
 	if r3 == false {
 		log.Fatalln("编辑失败")

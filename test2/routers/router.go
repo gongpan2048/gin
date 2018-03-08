@@ -1,4 +1,4 @@
-//路由配置
+//路由配置，根据路由决定需要调用那个apis函数
 package routers
 
 import (
